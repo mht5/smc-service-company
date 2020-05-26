@@ -30,8 +30,6 @@ public class IpoServiceTest {
     public void updateIpoTest() throws Exception {
         IpoDetail ipoDetail = new IpoDetail();
         ipoDetail.setId(1);
-        ipoDetail.setCompanyId(11);
-        ipoDetail.setStockCode("comp11-1");
         ipoDetail.setPricePerShare(new BigDecimal(100.00));
         ipoDetail.setNumberOfShares(100);
         ipoDetail.setOpenDateTime(new Date());

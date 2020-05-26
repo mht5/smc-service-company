@@ -9,10 +9,14 @@ import java.util.List;
 
 public interface CompanyRepository extends JpaRepository<Company, Integer> {
 
+    @Query("FROM Company c WHERE c.deactivated = 'N'")
+    List<Company> findAllActive();
+
     Company findById(int id);
 
-    List<Company> findByName(String name);
+    @Query("FROM Company c WHERE c.name = :name AND c.deactivated = 'N'")
+    List<Company> findActiveByName(@Param("name") String name);
 
-    @Query("FROM Company c WHERE c.id IN :companyIds")
-    List<Company> findByIds(@Param("companyIds") List<Integer> companyIds);
+    @Query("FROM Company c WHERE c.id IN :companyIds AND c.deactivated = 'N'")
+    List<Company> findActiveByIds(@Param("companyIds") List<Integer> companyIds);
 }

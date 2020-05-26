@@ -3,10 +3,7 @@ package com.smc.controller;
 import com.smc.domain.IpoDetail;
 import com.smc.service.IpoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -15,6 +12,11 @@ public class IpoController {
 
     @Autowired
     private IpoService ipoService;
+
+    @GetMapping("/find-ipo-by-company-id")
+    public IpoDetail findIpoByCompanyId(@RequestParam int companyId) throws Exception {
+        return ipoService.findIpoByCompanyId(companyId);
+    }
 
     @PostMapping("/update-ipo")
     public boolean updateIpo(@RequestBody IpoDetail ipoDetail) throws Exception {

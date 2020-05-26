@@ -29,13 +29,13 @@ public class IpoServiceImpl implements IpoService {
     private IpoDetailRepository ipoDetailRepo;
 
     @Autowired
-    private CompanyStockExchangeRepository companyStockExchangeRepo;
+    private CompanyStockExchangeRepository cseRepo;
 
     @Override
     @Transactional(rollbackOn = SQLException.class)
     public boolean updateIpo(IpoDetail ipoDetail) throws Exception {
         IpoDetail ipo = ipoDetailRepo.findById(ipoDetail.getId()).get();
-        int stockExchangeId = ipo.getStockExchangeId();
+//        int stockExchangeId = ipo.getStockExchangeId();
         if (ipo == null) {
             throw new Exception("IPO info with the given ID does not exist.");
         }
@@ -45,18 +45,18 @@ public class IpoServiceImpl implements IpoService {
             throw e;
         }
 //        ipo.setStockExchangeId(ipoDetail.getStockExchangeId());
-        ipo.setStockCode(ipoDetail.getStockCode());
+//        ipo.setStockCode(ipoDetail.getStockCode());
         ipo.setPricePerShare(ipoDetail.getPricePerShare());
         ipo.setNumberOfShares(ipoDetail.getNumberOfShares());
         ipo.setOpenDateTime(ipoDetail.getOpenDateTime());
         ipoDetailRepo.save(ipo);
 
-        CompanyStockExchange cse = companyStockExchangeRepo.findById(new SCEKey(ipoDetail.getCompanyId(), stockExchangeId)).get();
+//        CompanyStockExchange cse = cseRepo.findById(new SCEKey(ipoDetail.getCompanyId(), stockExchangeId)).get();
 //        cse.setStockExchangeId(ipoDetail.getStockExchangeId());
-        if (!cse.getStockCode().equals(ipoDetail.getStockCode())) {
-            cse.setStockCode(ipoDetail.getStockCode());
-            companyStockExchangeRepo.save(cse);
-        }
+//        if (!cse.getStockCode().equals(ipoDetail.getStockCode())) {
+//            cse.setStockCode(ipoDetail.getStockCode());
+//            companyStockExchangeRepo.save(cse);
+//        }
         return true;
     }
 
@@ -64,5 +64,19 @@ public class IpoServiceImpl implements IpoService {
     public List<IpoDetail> viewPlannedIpo() {
         Date date = new Date();
         return ipoDetailRepo.viewPlannedIpo(date);
+    }
+
+    @Override
+    public IpoDetail findIpoByCompanyId(int companyId) throws Exception {
+        List<CompanyStockExchange> cseList = cseRepo.findByCompanyId(companyId);
+        if (cseList.isEmpty()) {
+            throw new Exception("The company with ID " + companyId + " does not exist.");
+        }
+        CompanyStockExchange cse = cseList.get(0);
+        List<IpoDetail> ipoList = ipoDetailRepo.findByStockExchangeIdAndStockCode(cse.getStockExchangeId(), cse.getStockCode());
+        if (ipoList.isEmpty()) {
+            throw new Exception("No IPO found for company with ID " + companyId + ".");
+        }
+        return ipoList.get(0);
     }
 }

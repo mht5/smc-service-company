@@ -13,4 +13,5 @@ public interface IpoDetailRepository extends JpaRepository<IpoDetail, Integer> {
     @Query("FROM IpoDetail ipo WHERE ipo.openDateTime > :current ORDER BY ipo.openDateTime ASC")
     List<IpoDetail> viewPlannedIpo(@Param("current") Date date);
 
+    List<IpoDetail> findByStockExchangeIdAndStockCode(int stockExchangeId, String stockCode);
 }

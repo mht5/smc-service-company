@@ -1,6 +1,5 @@
 package com.smc.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -39,7 +38,7 @@ public class Company implements Serializable {
 
     @Column(name = "LISTED_IN_STOCK_EXCHANGES", length = 1, nullable = false)
     @Type(type="yes_no")
-    private Boolean listedInStockExchange;
+    private Boolean listedInStockExchanges;
 
     @Column(name = "BRIEF_WRITEUP")
     private String briefWriteup;
@@ -104,12 +103,12 @@ public class Company implements Serializable {
         this.boardOfDirectors = boardOfDirectors;
     }
 
-    public Boolean getListedInStockExchange() {
-        return listedInStockExchange;
+    public Boolean getListedInStockExchanges() {
+        return listedInStockExchanges;
     }
 
-    public void setListedInStockExchange(Boolean listedInStockExchange) {
-        this.listedInStockExchange = listedInStockExchange;
+    public void setListedInStockExchanges(Boolean listedInStockExchanges) {
+        this.listedInStockExchanges = listedInStockExchanges;
     }
 
     public String getBriefWriteup() {

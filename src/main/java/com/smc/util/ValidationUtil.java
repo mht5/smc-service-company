@@ -4,14 +4,14 @@ import com.smc.domain.IpoDetail;
 
 public class ValidationUtil {
 
-    public static void validateIpoDetail(IpoDetail ipoDetail, boolean checkStockExchange) throws Exception {
+    public static void validateIpoDetail(IpoDetail ipoDetail, boolean checkStockExchangeAndStockCode) throws Exception {
         if (ipoDetail == null) {
             throw new Exception("IPO can not be null.");
         }
-        if (checkStockExchange && ipoDetail.getStockExchangeId() == 0) {
+        if (checkStockExchangeAndStockCode && ipoDetail.getStockExchangeId() == 0) {
             throw new Exception("Stock exchange ID can not be null.");
         }
-        if (ipoDetail.getStockCode() == null || ipoDetail.getStockCode().length() < 1) {
+        if (checkStockExchangeAndStockCode && (ipoDetail.getStockCode() == null || ipoDetail.getStockCode().length() < 1)) {
             throw new Exception("Stock code can not be null.");
         }
         if (ipoDetail.getPricePerShare() == null) {

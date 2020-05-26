@@ -9,4 +9,6 @@ public interface IpoService {
     boolean updateIpo(IpoDetail ipoDetail) throws Exception;
 
     List<IpoDetail> viewPlannedIpo();
+
+    IpoDetail findIpoByCompanyId(int companyId) throws Exception;
 }

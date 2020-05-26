@@ -12,4 +12,5 @@ public interface CompanyStockExchangeRepository extends JpaRepository<CompanySto
 
     List<CompanyStockExchange> findByStockCode(String stockCode);
 
+    List<CompanyStockExchange>  findByCompanyId(int companyId);
 }

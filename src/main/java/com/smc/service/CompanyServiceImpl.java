@@ -1,6 +1,9 @@
 package com.smc.service;
 
-import com.smc.domain.*;
+import com.smc.domain.Company;
+import com.smc.domain.CompanyStockExchange;
+import com.smc.domain.IpoDetail;
+import com.smc.domain.Sector;
 import com.smc.pojo.AddCompanyRequest;
 import com.smc.repository.CompanyRepository;
 import com.smc.repository.CompanyStockExchangeRepository;
@@ -65,10 +68,12 @@ public class CompanyServiceImpl implements CompanyService {
         } catch (Exception e) {
             throw e;
         }
-        List<Company> companyList = companyRepo.findByName(company.getName());
+        List<Company> companyList = companyRepo.findActiveByName(company.getName());
         if (!companyList.isEmpty()) {
             throw new Exception("Company with the same name already exists.");
         }
+        company.setListedInStockExchanges(true);
+        company.setDeactivated(false);
         company = companyRepo.save(company);
         ipoDetailRepo.save(ipoDetail);
         CompanyStockExchange sec = new CompanyStockExchange(company.getId(), ipoDetail.getStockExchangeId(), ipoDetail.getStockCode());
@@ -78,7 +83,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public List<Company> findAll() {
-        return companyRepo.findAll();
+        return companyRepo.findAllActive();
     }
 
     @Override
@@ -94,7 +99,7 @@ public class CompanyServiceImpl implements CompanyService {
         if (name == null || name.length() < 1) {
             throw new Exception("Company name can not be null.");
         }
-        List<Company> companyList = companyRepo.findByName(name);
+        List<Company> companyList = companyRepo.findActiveByName(name);
         if (!companyList.isEmpty()) {
             return companyList.get(0);
         }
@@ -134,7 +139,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public List<Company> findCompanyByIds(List<Integer> companyIds) {
-        return companyRepo.findByIds(companyIds);
+        return companyRepo.findActiveByIds(companyIds);
     }
 
 }
